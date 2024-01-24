@@ -1,31 +1,35 @@
--- Criar a tabela 'usuario' se não existir
-CREATE TABLE IF NOT EXISTS usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    sobrenome VARCHAR(255),
-    email VARCHAR(255) UNIQUE,
-    senha VARCHAR(255)
+CREATE TABLE "usuario" (
+	"id_usuario" serial NOT NULL,
+	"nome" varchar(100) NOT NULL,
+	"sobrenome" varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL UNIQUE,
+	"senha" varchar(255) NOT NULL,
+	CONSTRAINT "usuario_pk" PRIMARY KEY ("id_usuario")
+) WITH (
+  OIDS=FALSE
 );
 
--- Criar a tabela 'projeto' se também não existir
-CREATE TABLE IF NOT EXISTS projeto (
-    id_projeto INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    titulo VARCHAR(255),
-    imagem_projeto VARCHAR(255),
-    tag VARCHAR(255),
-    link VARCHAR(255),
-    descricao VARCHAR(255),
-    data_criacao DATE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+CREATE TABLE "projeto" (
+	"id_projeto" serial NOT NULL,
+	"id_usuario" int NOT NULL,
+	"titulo" varchar(255) NOT NULL,
+	"imagem_projeto" varchar(255) NOT NULL,
+	"tag" varchar(255) NOT NULL,
+	"link" varchar(255) NOT NULL,
+	"descricao" varchar(255) NOT NULL,
+	"data_criacao" DATE NOT NULL,
+	CONSTRAINT "projeto_pk" PRIMARY KEY ("id_projeto")
+) WITH (
+  OIDS=FALSE
 );
+
+ALTER TABLE "projeto" ADD CONSTRAINT "fk_projeto_usuario" FOREIGN KEY ("id_usuario") REFERENCES "usuario"("id_usuario");
 
 -- Inserindo os usuários e projetos para testes
 INSERT INTO usuario (nome, sobrenome, email, senha) VALUES
 ('João', 'Silva', 'joao.silva@email.com', 'senha1'),
 ('Maria', 'Santos', 'maria.santos@email.com', 'senha2'),
 ('Carlos', 'Oliveira', 'carlos.oliveira@email.com', 'senha3');
-
 
 INSERT INTO projeto (id_usuario, titulo, imagem_projeto, tag, link, descricao, data_criacao) VALUES
 (1, 'Jon Project ', 'imagem1.jpg', 'Tag1', 'https://jonproject.com', 'Descrição do Projeto do João', '2024-01-23'),
