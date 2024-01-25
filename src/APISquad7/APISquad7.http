@@ -1,0 +1,6 @@
+@APISquad7_HostAddress = http://localhost:5167
+
+GET {{APISquad7_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

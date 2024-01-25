@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\APISquad7.props" />
+</Project>
