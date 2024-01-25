@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+gEcB7QE1vXNCAFd0Aiq99aJTLoLhWnTkxMQZ2tv1H5y6tst8L79uK42aV2LCWsBVi0qjTL7ASet6YihTPtlKA==",
+  "dgSpecHash": "9p2QSd+SayELGxXkrCfJk7n/P2A7zI29MHaurmH0P0O6W7El2ZHY5zAUkJ0QT/1jmyD38IE146UN7mS3nTAUTw==",
   "success": true,
-  "projectFilePath": "C:\\Projetos\\API\\APISquad7\\APISquad7.csproj",
+  "projectFilePath": "C:\\Projetos\\Squad7Oficial\\spa-orange-portfolio-backend\\src\\APISquad7\\APISquad7.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leona\\.nuget\\packages\\dapper\\2.1.28\\dapper.2.1.28.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

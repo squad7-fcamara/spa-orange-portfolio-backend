@@ -3,7 +3,7 @@ using Dapper;
 
 namespace APISquad7.Infraestrutura
 {
-    public class UsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         public bool Add(Usuario usuario)
         {
@@ -27,17 +27,6 @@ namespace APISquad7.Infraestrutura
             var result = coon.Connection.Query<Usuario>(sql: query);
 
             return result.ToList<Usuario>();
-        }
-
-        public Usuario GetByEmail(string email)
-        {
-            using var coon = new DbConnection();
-
-            string query = @"SELECT id_usuario as IdUsuario, nome, sobrenome, email FROM usuario where email = @email";
-
-            var result = coon.Connection.Query<Usuario>(sql: query, param: new { email = email });
-
-            return result.ToList<Usuario>()[0];
         }
     }
 }
