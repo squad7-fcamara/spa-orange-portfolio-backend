@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APISquad7")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23bc35b2a1d808f18da8b555bb7c69d871e0d16f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d4269c2c2e5f0071415f95b637d6065004e535c")]
 [assembly: System.Reflection.AssemblyProductAttribute("APISquad7")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APISquad7")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
