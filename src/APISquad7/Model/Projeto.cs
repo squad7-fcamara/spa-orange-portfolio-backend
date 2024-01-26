@@ -11,7 +11,7 @@ namespace APISquad7.Model
             Imagem = imagem;
             Tag = tag;
             Link = link;
-            Descricao = descricao
+            Descricao = descricao;
         }
 
         public int IdProjeto { get; set; }
