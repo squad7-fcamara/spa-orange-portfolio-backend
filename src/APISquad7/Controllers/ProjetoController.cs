@@ -7,23 +7,23 @@ namespace APISquad7.Controllers
     /* Classe que recebe as requisições HTTP do usuário */
     
     [ApiController]
-    [Route("api/usuario")]
-    public class UsuarioController : ControllerBase
+    [Route("api/projeto")]
+    public class ProjetoController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IProjetoRepository _projetoRepository;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public ProjetoController(IProjetoRepository projetoRepository)
         {
-            _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
+            _projetoRepository = projetoRepository ?? throw new ArgumentNullException(nameof(projetoRepository));
         }
 
-        /* Parâmetro usuarioView contém os dados que vieram do json da requisição http */
+        /* Parâmetro projetoView contém os dados que vieram do json da requisição http */
         [HttpPost]        
-        public IActionResult Add(UsuarioViewModel usuarioView)
+        public IActionResult Add(ProjetoViewModel projetoView)
         {
-            var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email, usuarioView.Senha);
+            var projeto = new Projeto(projetoView.Titulo, projetoView.Imagem, projetoView.Tag, projetoView.Link, projetoView.Descricao);
 
-            _usuarioRepository.Add(usuario);
+            _projetoRepository.Add(projeto);
 
             //!!! Verificar como retonar NÃO OK
 
@@ -34,11 +34,11 @@ namespace APISquad7.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var usuarios = _usuarioRepository.Get();
+            var projetos = _projetoRepository.Get();
 
             //!!! Verificar como retonar NÃO OK
 
-            return Ok(usuarios);
+            return Ok(projetos);
         }
     }
 }
