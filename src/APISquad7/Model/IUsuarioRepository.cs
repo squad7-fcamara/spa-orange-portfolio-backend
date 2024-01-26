@@ -5,5 +5,7 @@
         bool Add(Usuario usuario);
 
         List<Usuario> Get();
+
+        Int64 CountByEmailSenha(string email, string senha);
     }
 }

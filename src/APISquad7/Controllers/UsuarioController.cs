@@ -21,7 +21,7 @@ namespace APISquad7.Controllers
         [HttpPost]        
         public IActionResult Add(UsuarioViewModel usuarioView)
         {
-            var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email, usuarioView.Senha);
+            var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email.ToLower(), usuarioView.Senha);
 
             _usuarioRepository.Add(usuario);
 
@@ -29,7 +29,6 @@ namespace APISquad7.Controllers
 
             return Ok();
         }
-
         
         [HttpGet]
         public IActionResult Get()
@@ -39,6 +38,23 @@ namespace APISquad7.Controllers
             //!!! Verificar como retonar NÃO OK
 
             return Ok(usuarios);
+        }
+
+        [HttpGet("validarLogin")]
+        public IActionResult ValidarLogin([FromQuery] string email, [FromQuery] string senha)
+        {
+            var qtd = _usuarioRepository.CountByEmailSenha(email.ToLower(), senha);
+
+            bool retorno = false;
+
+            if (qtd > 0)
+            {
+                retorno = true;
+            }
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok(retorno);
         }
     }
 }
