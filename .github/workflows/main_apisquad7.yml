@@ -10,6 +10,18 @@ on:
   workflow_dispatch:
 
 jobs:
+  show-working-directory:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Exibir Diretório de Trabalho
+      run: |
+        pwd
+        ls -R
+        
   build:
     runs-on: windows-latest
 
