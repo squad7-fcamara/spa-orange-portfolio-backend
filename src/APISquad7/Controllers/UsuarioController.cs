@@ -1,4 +1,5 @@
-﻿using APISquad7.Model;
+﻿using APISquad7.Infraestrutura;
+using APISquad7.Model;
 using APISquad7.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,12 @@ namespace APISquad7.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IProjetoRepository _projetoRepository;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IProjetoRepository projetoRepository)
         {
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
+            _projetoRepository = projetoRepository ?? throw new ArgumentNullException(nameof(projetoRepository));
         }
 
         /* Parâmetro usuarioView contém os dados que vieram do json da requisição http */
@@ -43,18 +46,23 @@ namespace APISquad7.Controllers
         [HttpGet("validarLogin")]
         public IActionResult ValidarLogin([FromQuery] string email, [FromQuery] string senha)
         {
-            var qtd = _usuarioRepository.CountByEmailSenha(email.ToLower(), senha);
-
-            bool retorno = false;
-
-            if (qtd > 0)
-            {
-                retorno = true;
-            }
+            var idUsuario = _usuarioRepository.GetByEmailSenha(email.ToLower(), senha);
 
             //!!! Verificar como retonar NÃO OK
 
-            return Ok(retorno);
+            return Ok(idUsuario);
+        }
+
+        [HttpGet("getUsuarioProjetoByIdUsuario")]
+        public IActionResult GetUsuarioProjetoByIdUsuario([FromQuery] int idUsuario)
+        {
+            var usuario = _usuarioRepository.GetByIdUsuario(idUsuario);
+
+            usuario.lstProjeto = _projetoRepository.GetByIdUsuario(idUsuario);
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok(usuario);
         }
     }
 }

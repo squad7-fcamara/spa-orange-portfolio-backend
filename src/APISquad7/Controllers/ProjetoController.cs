@@ -1,4 +1,5 @@
-﻿using APISquad7.Model;
+﻿using APISquad7.Infraestrutura;
+using APISquad7.Model;
 using APISquad7.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace APISquad7.Controllers
         [HttpPost]        
         public IActionResult Add(ProjetoViewModel projetoView)
         {
-            var projeto = new Projeto(projetoView.Titulo, projetoView.Imagem, projetoView.Tag, projetoView.Link, projetoView.Descricao);
+            var projeto = new Projeto(Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, projetoView.Imagem, projetoView.Tag, projetoView.Link, projetoView.Descricao);
 
             _projetoRepository.Add(projeto);
 
@@ -29,7 +30,6 @@ namespace APISquad7.Controllers
 
             return Ok();
         }
-
         
         [HttpGet]
         public IActionResult Get()

@@ -18,5 +18,6 @@ namespace APISquad7.Model
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+        public List<Projeto> lstProjeto { get; set; }
     }
 }

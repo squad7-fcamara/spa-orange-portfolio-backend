@@ -10,8 +10,8 @@ namespace APISquad7.Infraestrutura
             using var conn = new DbConnection();
 
             string query = @"INSERT INTO projeto(
-	                            titulo, imagem, tag, link, descricao)
-	                            VALUES (@titulo, @imagem, @tag, @link, @descricao);";
+	                            id_usuario, titulo, imagem_projeto, tag, link, descricao, data_criacao)
+	                            VALUES (@idUsuario, @titulo, @imagem, @tag, @link, @descricao, CURRENT_DATE);";
 
             var result = conn.Connection.Execute(sql: query, param: projeto);
 
@@ -22,9 +22,23 @@ namespace APISquad7.Infraestrutura
         {
             using var coon = new DbConnection();
 
-            string query = @"SELECT id_projeto as IdProjeto, titulo, imagem, tag, link, descricao FROM projeto;";
+            string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
+                                tag, link, descricao, data_criacao as DataCriacao FROM projeto;";
 
             var result = coon.Connection.Query<Projeto>(sql: query);
+
+            return result.ToList<Projeto>();
+        }
+
+        public List<Projeto> GetByIdUsuario(int idUsuario)
+        {
+            using var coon = new DbConnection();
+
+            string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
+                                tag, link, descricao, data_criacao as DataCriacao FROM projeto
+                                where id_usuario = @idUsuarioInformado;";
+
+            var result = coon.Connection.Query<Projeto>(sql: query, param: new { idUsuarioInformado = idUsuario });
 
             return result.ToList<Projeto>();
         }
