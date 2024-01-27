@@ -6,6 +6,8 @@
 
         List<Usuario> Get();
 
-        Int64 CountByEmailSenha(string email, string senha);
+        Usuario GetByIdUsuario(int idUsuario);
+
+        int GetByEmailSenha(string email, string senha);
     }
 }
