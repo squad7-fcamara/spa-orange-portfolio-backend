@@ -17,7 +17,7 @@ CREATE TABLE "projeto" (
 	"tag" varchar(255) NOT NULL,
 	"link" varchar(255) NOT NULL,
 	"descricao" varchar(255) NOT NULL,
-	"data_criacao" DATE NOT NULL,
+	"data_criacao" TIMESTAMP NOT NULL,
 	CONSTRAINT "projeto_pk" PRIMARY KEY ("id_projeto")
 ) WITH (
   OIDS=FALSE

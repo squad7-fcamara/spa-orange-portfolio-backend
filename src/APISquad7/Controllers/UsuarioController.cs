@@ -21,48 +21,75 @@ namespace APISquad7.Controllers
         }
 
         /* Parâmetro usuarioView contém os dados que vieram do json da requisição http */
-        [HttpPost]        
+        [HttpPost]
         public IActionResult Add(UsuarioViewModel usuarioView)
         {
             var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email.ToLower(), usuarioView.Senha);
 
-            _usuarioRepository.Add(usuario);
+            int result = _usuarioRepository.Add(usuario);
 
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok();
+            switch (result)
+            {
+                case 0:
+                    return Ok("Inclusão realizada com sucesso!");
+                    break;
+                case 1:
+                    return StatusCode(500, "Inclusão falhou.");
+                    break;
+                case 2:
+                    return Conflict("Violação de chave única.");
+                    break;
+                default:
+                    return StatusCode(500, "Falha não tratada.");
+                    break;
+            }
         }
-        
+
         [HttpGet]
         public IActionResult Get()
         {
-            var usuarios = _usuarioRepository.Get();
+            try
+            {
+                var usuarios = _usuarioRepository.Get();
 
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(usuarios);
+                return Ok(usuarios);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Obtenção falhou.");
+            }
         }
 
         [HttpGet("validarLogin")]
         public IActionResult ValidarLogin([FromQuery] string email, [FromQuery] string senha)
         {
-            var idUsuario = _usuarioRepository.GetByEmailSenha(email.ToLower(), senha);
+            try
+            {
+                var idUsuario = _usuarioRepository.GetByEmailSenha(email.ToLower(), senha);
 
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(idUsuario);
+                return Ok(idUsuario);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Validação do login falhou.");
+            }
         }
 
         [HttpGet("getUsuarioProjetoByIdUsuario")]
         public IActionResult GetUsuarioProjetoByIdUsuario([FromQuery] int idUsuario)
         {
-            var usuario = _usuarioRepository.GetByIdUsuario(idUsuario);
+            try
+            {
+                var usuario = _usuarioRepository.GetByIdUsuario(idUsuario);
 
-            usuario.lstProjeto = _projetoRepository.GetByIdUsuario(idUsuario);
+                usuario.lstProjeto = _projetoRepository.GetByIdUsuario(idUsuario);
 
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(usuario);
+                return Ok(usuario);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Obtenção falhou.");
+            }
         }
     }
 }

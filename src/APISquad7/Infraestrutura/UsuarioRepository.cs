@@ -1,21 +1,44 @@
 ﻿using APISquad7.Model;
 using Dapper;
+using Npgsql;
 
 namespace APISquad7.Infraestrutura
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        public bool Add(Usuario usuario)
+        /*
+         * Retornos possíveis:
+         * 0 - Inclusão deu certo;
+         * 1 - Inclusão falhou;
+         * 2 - Violação de chave única;
+         */
+        public int Add(Usuario usuario)
         {
-            using var conn = new DbConnection();
+            try
+            {
+                using var conn = new DbConnection();
 
-            string query = @"INSERT INTO usuario(
+                string query = @"INSERT INTO usuario(
 	                            nome, sobrenome, email, senha)
 	                            VALUES (@nome,@sobrenome,@email,@senha);";
 
-            var result = conn.Connection.Execute(sql: query, param: usuario);
+                var result = conn.Connection.Execute(sql: query, param: usuario);
 
-            return result == 1;
+                return 0;
+            }
+            catch (NpgsqlException ex)
+            {
+                if (ex.SqlState == "23505") //Código sql que significa violação de chave única
+                {
+                    return 2;
+                }
+
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
         }
 
         public List<Usuario> Get()
@@ -50,7 +73,7 @@ namespace APISquad7.Infraestrutura
             var result = coon.Connection.ExecuteScalar(sql: query, param: new { emailInformado = email, senhaInformada = senha });
 
             int idUsuario = -1;
-            
+
             if (result != null)
             {
                 idUsuario = (int)result;
