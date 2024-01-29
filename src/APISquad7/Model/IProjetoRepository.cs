@@ -7,5 +7,7 @@
         List<Projeto> Get();
 
         List<Projeto> GetByIdUsuario(int idUsuario);
+
+        bool Delete(int idProjeto);
     }
 }

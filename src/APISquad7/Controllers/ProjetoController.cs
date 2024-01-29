@@ -40,5 +40,15 @@ namespace APISquad7.Controllers
 
             return Ok(projetos);
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            _projetoRepository.Delete(id);
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok();
+        }
     }
 }
