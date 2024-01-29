@@ -42,5 +42,16 @@ namespace APISquad7.Infraestrutura
 
             return result.ToList<Projeto>();
         }
+
+        public bool Delete(int idProjeto)
+        {
+            using var conn = new DbConnection();
+
+            string query = @"DELETE from projeto where id_projeto = @idProjetoInformado;";
+
+            var result = conn.Connection.Execute(sql: query, param: new { idProjetoInformado = idProjeto });
+
+            return result == 1;
+        }
     }
 }
