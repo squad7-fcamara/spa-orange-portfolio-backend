@@ -23,5 +23,7 @@ namespace APISquad7.Model
         public string Link { get; set; }
         public string Descricao { get; set; }
         public string DataCriacao { get; set; }
+        public string NomeCompleto { get; set; }
+        
     }
 }
