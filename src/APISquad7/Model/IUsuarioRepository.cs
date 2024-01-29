@@ -2,7 +2,7 @@
 {
     public interface IUsuarioRepository
     {
-        bool Add(Usuario usuario);
+        int Add(Usuario usuario);
 
         List<Usuario> Get();
 
