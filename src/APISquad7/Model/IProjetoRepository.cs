@@ -8,6 +8,8 @@
 
         List<Projeto> GetByIdUsuario(int idUsuario);
 
+        Projeto GetByIdProjeto(int idProjeto);
+
         bool Delete(int idProjeto);
     }
 }

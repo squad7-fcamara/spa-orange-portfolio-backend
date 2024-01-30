@@ -45,6 +45,19 @@ namespace APISquad7.Infraestrutura
             return result.ToList<Projeto>();
         }
 
+        public Projeto GetByIdProjeto(int idProjeto)
+        {
+            using var coon = new DbConnection();
+
+            string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
+                                tag, link, descricao, data_criacao as DataCriacao FROM projeto
+                                where id_projeto = @idProjetoInformado;";
+
+            var result = coon.Connection.Query<Projeto>(sql: query, param: new { idProjetoInformado = idProjeto });
+
+            return result.ToList<Projeto>()[0];
+        }
+
         public bool Delete(int idProjeto)
         {
             using var conn = new DbConnection();
