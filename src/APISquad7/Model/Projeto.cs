@@ -10,7 +10,7 @@ namespace APISquad7.Model
             IdUsuario = idUsuario;
             Titulo = titulo;
             Imagem = imagem;
-            Tag = tag;
+            Tag = tag.ToLower();
             Link = link;
             Descricao = descricao;
         }

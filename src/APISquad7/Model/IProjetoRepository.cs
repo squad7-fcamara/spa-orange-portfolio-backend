@@ -10,6 +10,8 @@
 
         Projeto GetByIdProjeto(int idProjeto);
 
+        List<Projeto> GetByTags(int idUsuario, string tags);
+
         bool Delete(int idProjeto);
     }
 }

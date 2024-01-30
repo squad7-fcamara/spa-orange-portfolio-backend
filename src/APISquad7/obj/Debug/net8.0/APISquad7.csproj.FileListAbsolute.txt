@@ -67,3 +67,5 @@ C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\obj\Debug\n
 C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\obj\Debug\net8.0\APISquad7.pdb
 C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\obj\Debug\net8.0\APISquad7.genruntimeconfig.cache
 C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\obj\Debug\net8.0\ref\APISquad7.dll
+C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\bin\Debug\net8.0\APISquad7.xml
+C:\Projetos\Squad7Oficial\spa-orange-portfolio-backend\src\APISquad7\obj\Debug\net8.0\APISquad7.xml

@@ -58,6 +58,36 @@ namespace APISquad7.Infraestrutura
             return result.ToList<Projeto>()[0];
         }
 
+        /* Formato esperado das tags: nomeTag1;nomeTag2 */
+        public List<Projeto> GetByTags(int idUsuario, string tags)
+        {
+            using var coon = new DbConnection();
+
+            List<string> lstTags = tags.Split(';').ToList();
+
+            string consultaSQL = "";
+
+            foreach (string tag in lstTags)
+            {
+                //Consulta para cobrir todas as possibilidades de tags na base de dados
+                //Foi feito para impedir que uma busca pela tag java retorne projetos com a tag javascript
+                consultaSQL += "tag like '" + tag.ToLower() + ";%' or ";
+                consultaSQL += "tag like '%;" + tag.ToLower() + ";%' or ";
+                consultaSQL += "tag like '%;" + tag.ToLower() + "' or ";
+                consultaSQL += "tag like '" + tag.ToLower() + "' or ";
+            }
+            
+            consultaSQL = consultaSQL.Substring(0, consultaSQL.Length - 4); //remove o último " or "
+
+            string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
+                                tag, link, descricao, data_criacao as DataCriacao FROM projeto
+                                where id_usuario = @idUsuarioInformado and (" + consultaSQL + ")";
+
+            var result = coon.Connection.Query<Projeto>(sql: query, param: new { idUsuarioInformado = idUsuario });
+
+            return result.ToList<Projeto>();
+        }
+
         public bool Delete(int idProjeto)
         {
             using var conn = new DbConnection();
