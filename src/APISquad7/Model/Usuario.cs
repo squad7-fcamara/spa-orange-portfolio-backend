@@ -9,7 +9,7 @@ namespace APISquad7.Model
         {
             Nome = nome;
             Sobrenome = sobrenome;
-            Email = email;
+            Email = email.ToLower(); //Passa o email para o padrão de ter somente letras minúsculas
             Senha = senha;
         }
 

@@ -1,5 +1,7 @@
 using APISquad7.Infraestrutura;
 using APISquad7.Model;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

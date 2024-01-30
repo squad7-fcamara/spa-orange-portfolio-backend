@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APISquad7.Controllers
 {
-    /* Classe que recebe as requisições HTTP do usuário */
-    
     [ApiController]
     [Route("api/usuario")]
     public class UsuarioController : ControllerBase
@@ -24,7 +22,7 @@ namespace APISquad7.Controllers
         [HttpPost]
         public IActionResult Add(UsuarioViewModel usuarioView)
         {
-            var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email.ToLower(), usuarioView.Senha);
+            var usuario = new Usuario(usuarioView.Nome, usuarioView.Sobrenome, usuarioView.Email, usuarioView.Senha);
 
             int result = _usuarioRepository.Add(usuario);
 

@@ -57,6 +57,16 @@ namespace APISquad7.Controllers
             return File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), String.Empty));
         }
 
+        [HttpGet("getByTags")]
+        public IActionResult getByTags([FromQuery] int idUsuario, [FromQuery] string tags)
+        {
+            var projetos = _projetoRepository.GetByTags(idUsuario, tags);
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok(projetos);
+        }
+
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
