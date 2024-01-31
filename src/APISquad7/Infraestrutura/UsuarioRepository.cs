@@ -64,22 +64,24 @@ namespace APISquad7.Infraestrutura
             return result.ToList<Usuario>()[0];
         }
 
-        public int GetByEmailSenha(string email, string senha)
+        public Usuario GetByEmailSenha(string email, string senha)
         {
             using var coon = new DbConnection();
 
-            string query = @"SELECT id_usuario FROM usuario where email = @emailInformado and senha = @senhaInformada;";
+            string query = @"SELECT id_usuario as IdUsuario, nome, sobrenome, email FROM usuario 
+                                where email = @emailInformado and senha = @senhaInformada;";
 
-            var result = coon.Connection.ExecuteScalar(sql: query, param: new { emailInformado = email, senhaInformada = senha });
+            var result = coon.Connection.Query<Usuario>(sql: query, param: new { emailInformado = email, senhaInformada = senha });
 
-            int idUsuario = -1;
-
-            if (result != null)
+            if (result.Count() == 0)
             {
-                idUsuario = (int)result;
+                Usuario usuario = new Usuario();
+                usuario.IdUsuario = -1;
+
+                return usuario;
             }
 
-            return idUsuario;
+            return result.ToList<Usuario>()[0];
         }
     }
 
