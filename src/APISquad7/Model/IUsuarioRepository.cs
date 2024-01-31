@@ -8,6 +8,6 @@
 
         Usuario GetByIdUsuario(int idUsuario);
 
-        int GetByEmailSenha(string email, string senha);
+        Usuario GetByEmailSenha(string email, string senha);
     }
 }

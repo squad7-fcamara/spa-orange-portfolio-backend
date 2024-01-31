@@ -63,9 +63,9 @@ namespace APISquad7.Controllers
         {
             try
             {
-                var idUsuario = _usuarioRepository.GetByEmailSenha(email.ToLower(), senha);
+                var usuario = _usuarioRepository.GetByEmailSenha(email.ToLower(), senha);
 
-                return Ok(idUsuario);
+                return Ok(usuario);
             }
             catch (Exception)
             {
