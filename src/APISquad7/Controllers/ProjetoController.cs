@@ -22,10 +22,14 @@ namespace APISquad7.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
         {
-            var filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
+            var filePath = "";
 
-            using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
-            projetoView.Imagem.CopyTo(fileStream);
+            if (projetoView.Imagem != null)
+            {
+                filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
+                using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
+                projetoView.Imagem.CopyTo(fileStream);
+            }
 
             var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
 
