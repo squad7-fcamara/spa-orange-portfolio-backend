@@ -18,6 +18,29 @@ namespace APISquad7.Infraestrutura
             return result == 1;
         }
 
+        public bool Update(Projeto projeto)
+        {
+            using var conn = new DbConnection();
+
+            string update = @"UPDATE projeto set titulo = @titulo, tag = @tag, link = @link, descricao = @descricao";
+
+            if (projeto.Imagem != "") // Em uma edição, só altera imagem se ela for informada
+            {
+                update += ", imagem_projeto = @imagem";
+            }
+
+            string query = update + " where id_projeto = @idProjeto;";
+
+            var result = conn.Connection.Execute(sql: query, param: projeto);
+
+            if (result == 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public List<Projeto> Get()
         {
             using var coon = new DbConnection();
@@ -65,23 +88,29 @@ namespace APISquad7.Infraestrutura
 
             List<string> lstTags = tags.Split(';').ToList();
 
-            string consultaSQL = "";
+            string consultaTag = "";
 
             foreach (string tag in lstTags)
             {
-                //Consulta para cobrir todas as possibilidades de tags na base de dados
-                //Foi feito para impedir que uma busca pela tag java retorne projetos com a tag javascript
-                consultaSQL += "tag like '" + tag.ToLower() + ";%' or ";
-                consultaSQL += "tag like '%;" + tag.ToLower() + ";%' or ";
-                consultaSQL += "tag like '%;" + tag.ToLower() + "' or ";
-                consultaSQL += "tag like '" + tag.ToLower() + "' or ";
+                // Consulta para cobrir todas as possibilidades de tags na base de dados
+                // Foi feito para impedir que uma busca pela tag java retorne projetos com a tag javascript
+                consultaTag += "tag like '" + tag.ToLower() + ";%' or ";
+                consultaTag += "tag like '%;" + tag.ToLower() + ";%' or ";
+                consultaTag += "tag like '%;" + tag.ToLower() + "' or ";
+                consultaTag += "tag like '" + tag.ToLower() + "' or ";
             }
-            
-            consultaSQL = consultaSQL.Substring(0, consultaSQL.Length - 4); //remove o último " or "
+
+            consultaTag = consultaTag.Substring(0, consultaTag.Length - 4); // Remove o último " or "
+
+            string where = "where (" + consultaTag + ")";
+
+            if (idUsuario > 0) // Só coloca o usuário se ele for informado
+            {
+                where += " and id_usuario = @idUsuarioInformado;";
+            }
 
             string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
-                                tag, link, descricao, data_criacao as DataCriacao FROM projeto
-                                where id_usuario = @idUsuarioInformado and (" + consultaSQL + ")";
+                                tag, link, descricao, data_criacao as DataCriacao FROM projeto " + where;
 
             var result = coon.Connection.Query<Projeto>(sql: query, param: new { idUsuarioInformado = idUsuario });
 

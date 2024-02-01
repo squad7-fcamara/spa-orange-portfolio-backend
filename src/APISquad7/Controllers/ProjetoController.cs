@@ -27,9 +27,31 @@ namespace APISquad7.Controllers
             using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
             projetoView.Imagem.CopyTo(fileStream);
 
-            var projeto = new Projeto(Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
+            var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
 
             _projetoRepository.Add(projeto);
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok();
+        }
+
+        /* Parâmetro projetoView contém os dados que vieram do json da requisição http */
+        [HttpPut]
+        public IActionResult Put([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
+        {
+            var filePath = "";
+
+            if (projetoView.Imagem != null)
+            {
+                filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
+                using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
+                projetoView.Imagem.CopyTo(fileStream);
+            }
+
+            var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
+
+            _projetoRepository.Update(projeto);
 
             //!!! Verificar como retonar NÃO OK
 
@@ -54,7 +76,7 @@ namespace APISquad7.Controllers
 
             var dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
 
-            return File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), String.Empty));
+            return File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
         }
 
         [HttpGet("getByTags")]

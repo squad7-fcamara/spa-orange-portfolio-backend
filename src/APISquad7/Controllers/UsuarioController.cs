@@ -73,6 +73,21 @@ namespace APISquad7.Controllers
             }
         }
 
+        [HttpGet("getByIdUsuario")]
+        public IActionResult GetByIdUsuario([FromQuery] int idUsuario)
+        {
+            try
+            {
+                var usuario = _usuarioRepository.GetByIdUsuario(idUsuario);
+
+                return Ok(usuario);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Obtenção falhou.");
+            }
+        }
+
         [HttpGet("getUsuarioProjetoByIdUsuario")]
         public IActionResult GetUsuarioProjetoByIdUsuario([FromQuery] int idUsuario)
         {
