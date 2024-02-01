@@ -4,6 +4,8 @@
     {
         bool Add(Projeto projeto);
 
+        bool Update(Projeto projeto);
+
         List<Projeto> Get();
 
         List<Projeto> GetByIdUsuario(int idUsuario);

@@ -28,7 +28,7 @@ namespace APISquad7.Infraestrutura
             }
             catch (NpgsqlException ex)
             {
-                if (ex.SqlState == "23505") //Código sql que significa violação de chave única
+                if (ex.SqlState == "23505") // Código sql que significa violação de chave única
                 {
                     return 2;
                 }

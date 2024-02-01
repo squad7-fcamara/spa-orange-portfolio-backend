@@ -5,8 +5,9 @@ namespace APISquad7.Model
     public class Projeto
     {
         public Projeto() { }
-        public Projeto(int idUsuario, string titulo, string imagem, string tag, string link, string descricao)
+        public Projeto(int idProjeto, int idUsuario, string titulo, string imagem, string tag, string link, string descricao)
         {
+            IdProjeto = idProjeto;
             IdUsuario = idUsuario;
             Titulo = titulo;
             Imagem = imagem;
