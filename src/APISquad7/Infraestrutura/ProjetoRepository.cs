@@ -41,20 +41,6 @@ namespace APISquad7.Infraestrutura
             return false;
         }
 
-        public List<Projeto> Get()
-        {
-            using var coon = new DbConnection();
-
-            string query = @"SELECT p.id_projeto as IdProjeto, p.id_usuario as IdUsuario, p.titulo, p.imagem_projeto as Imagem, 
-                                p.tag, p.link, p.descricao, p.data_criacao as DataCriacao, 
-                                CONCAT(u.nome, ' ', u.sobrenome) as nomeCompleto FROM projeto p 
-                                inner join usuario u on p.id_usuario = u.id_usuario order by DataCriacao DESC;";
-
-            var result = coon.Connection.Query<Projeto>(sql: query);
-
-            return result.ToList<Projeto>();
-        }
-
         public List<Projeto> GetByIdUsuario(int idUsuario)
         {
             using var coon = new DbConnection();
@@ -82,7 +68,7 @@ namespace APISquad7.Infraestrutura
         }
 
         /* Formato esperado das tags: nomeTag1;nomeTag2 */
-        public List<Projeto> GetByTags(int idUsuario, string tags)
+        public List<Projeto> GetByUsuarioTags(int idUsuario, string tags)
         {
             using var coon = new DbConnection();
 
@@ -102,15 +88,49 @@ namespace APISquad7.Infraestrutura
 
             consultaTag = consultaTag.Substring(0, consultaTag.Length - 4); // Remove o último " or "
 
-            string where = "where (" + consultaTag + ")";
-
-            if (idUsuario > 0) // Só coloca o usuário se ele for informado
-            {
-                where += " and id_usuario = @idUsuarioInformado;";
-            }
+            string where = "where (" + consultaTag + ") and id_usuario = @idUsuarioInformado;";
 
             string query = @"SELECT id_projeto as IdProjeto, id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
                                 tag, link, descricao, data_criacao as DataCriacao FROM projeto " + where;
+
+            var result = coon.Connection.Query<Projeto>(sql: query, param: new { idUsuarioInformado = idUsuario });
+
+            return result.ToList<Projeto>();
+        }
+
+        /* Formato esperado das tags: nomeTag1;nomeTag2 */
+        public List<Projeto> GetComunidade(int idUsuario, string tags)
+        {
+            using var coon = new DbConnection();
+
+            string consultaTag = "";
+
+            string where = "where p.id_usuario <> @idUsuarioInformado";
+
+            if (tags != null)
+            {
+                List<string> lstTags = tags.Split(';').ToList();
+
+                foreach (string tag in lstTags)
+                {
+                    // Consulta para cobrir todas as possibilidades de tags na base de dados
+                    // Foi feito para impedir que uma busca pela tag java retorne projetos com a tag javascript
+                    consultaTag += "tag like '" + tag.ToLower() + ";%' or ";
+                    consultaTag += "tag like '%;" + tag.ToLower() + ";%' or ";
+                    consultaTag += "tag like '%;" + tag.ToLower() + "' or ";
+                    consultaTag += "tag like '" + tag.ToLower() + "' or ";
+                }
+
+                consultaTag = consultaTag.Substring(0, consultaTag.Length - 4); // Remove o último " or "
+
+                where += " and (" + consultaTag + ");";
+            }
+
+            string query = @"SELECT id_projeto as IdProjeto, u.id_usuario as IdUsuario, titulo, imagem_projeto as Imagem, 
+                                tag, link, descricao, data_criacao as DataCriacao,
+                                CONCAT(u.nome, ' ', u.sobrenome) as nomeCompleto FROM 
+                                projeto p inner join usuario u on p.id_usuario = u.id_usuario "
+                                + where;
 
             var result = coon.Connection.Query<Projeto>(sql: query, param: new { idUsuarioInformado = idUsuario });
 

@@ -6,13 +6,13 @@
 
         bool Update(Projeto projeto);
 
-        List<Projeto> Get();
-
         List<Projeto> GetByIdUsuario(int idUsuario);
 
         Projeto GetByIdProjeto(int idProjeto);
 
-        List<Projeto> GetByTags(int idUsuario, string tags);
+        List<Projeto> GetByUsuarioTags(int idUsuario, string tags);
+
+        List<Projeto> GetComunidade(int idUsuario, string tags);
 
         bool Delete(int idProjeto);
     }
