@@ -62,16 +62,6 @@ namespace APISquad7.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var projetos = _projetoRepository.Get();
-
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(projetos);
-        }
-
         [HttpPost]
         [Route("{id}/download")]
         public IActionResult DownloadImagem(int id)
@@ -83,10 +73,20 @@ namespace APISquad7.Controllers
             return File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
         }
 
-        [HttpGet("getByTags")]
-        public IActionResult getByTags([FromQuery] int idUsuario, [FromQuery] string tags)
+        [HttpGet("getByUsuarioTags")]
+        public IActionResult getByUsuarioTags([FromQuery] int idUsuario, [FromQuery] string tags)
         {
-            var projetos = _projetoRepository.GetByTags(idUsuario, tags);
+            var projetos = _projetoRepository.GetByUsuarioTags(idUsuario, tags);
+
+            //!!! Verificar como retonar NÃO OK
+
+            return Ok(projetos);
+        }
+
+        [HttpGet("getComunidade")]
+        public IActionResult getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
+        {
+            var projetos = _projetoRepository.GetComunidade(idUsuario, tags);
 
             //!!! Verificar como retonar NÃO OK
 
