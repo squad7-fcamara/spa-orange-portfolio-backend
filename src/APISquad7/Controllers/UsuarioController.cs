@@ -96,7 +96,8 @@ namespace APISquad7.Controllers
         /// Se usuário tem permissão, retorna os dados: idUsuario, nome, sobrenome e email.  
         /// Se usuário não tem permissão, retorna idUsuario = -1.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="email"></param>
+        /// <param name="senha"></param>
         /// <returns></returns>
         /// <response code="200">Validação realizada com sucesso.</response>
         /// <response code="500">Falha não tratada.</response>
@@ -124,7 +125,7 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de saída: idUsuario, nome, sobrenome e email.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="idUsuario"></param>
         /// <returns></returns>
         /// <response code="200">Busca realizada com sucesso.</response>
         /// <response code="500">Falha não tratada.</response>
@@ -152,7 +153,7 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de saída: idUsuario, nome, sobrenome e email e lista de projetos: idProjeto, titulo, imagem, tag, link, descrição e dataCriacao e arquivoImagem.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="idUsuario"></param>
         /// <returns></returns>
         /// <response code="200">Busca realizada com sucesso.</response>
         /// <response code="500">Falha não tratada.</response>

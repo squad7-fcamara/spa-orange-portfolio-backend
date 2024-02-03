@@ -27,28 +27,35 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de entrada: idUsuario, titulo, imagem, tag, link e descricao.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="projetoView"></param>
         /// <returns></returns>
         /// <response code="200">Projeto cadastrado com sucesso.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpPost]
         public IActionResult Add([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
         {
-            var filePath = "";
-
-            if (projetoView.Imagem != null)
+            try
             {
-                filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
-                using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
-                projetoView.Imagem.CopyTo(fileStream);
+                var filePath = "";
+
+                if (projetoView.Imagem != null)
+                {
+                    filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
+                    using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
+                    projetoView.Imagem.CopyTo(fileStream);
+                }
+
+                var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
+
+                _projetoRepository.Add(projeto);
+
+                return Ok();
             }
-
-            var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
-
-            _projetoRepository.Add(projeto);
-
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok();
+            catch (Exception)
+            {
+                return StatusCode(500, "Inclusão falhou.");
+            }
+            
         }
 
         /* Parâmetro projetoView contém os dados que vieram do json da requisição http */
@@ -60,28 +67,34 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de entrada: idProjeto, titulo, imagem, tag, link e descricao.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="projetoView"></param>
         /// <returns></returns>
         /// <response code="200">Projeto editado com sucesso.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpPut]
         public IActionResult Put([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
         {
-            var filePath = "";
-
-            if (projetoView.Imagem != null)
+            try
             {
-                filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
-                using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
-                projetoView.Imagem.CopyTo(fileStream);
+                var filePath = "";
+
+                if (projetoView.Imagem != null)
+                {
+                    filePath = Path.Combine("Imagens", projetoView.Imagem.FileName); // caminho do arquivo
+                    using Stream fileStream = new FileStream(filePath, FileMode.Create); // classe que permite que salve o arquivo dentro da minha memoria e depois eu coloque dentro do meu sistema
+                    projetoView.Imagem.CopyTo(fileStream);
+                }
+
+                var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
+
+                _projetoRepository.Update(projeto);
+
+                return Ok();
             }
-
-            var projeto = new Projeto(Convert.ToInt32(projetoView.IdProjeto), Convert.ToInt32(projetoView.IdUsuario), projetoView.Titulo, filePath, projetoView.Tag, projetoView.Link, projetoView.Descricao);
-
-            _projetoRepository.Update(projeto);
-
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok();
+            catch (Exception)
+            {
+                return StatusCode(500, "Edição falhou.");
+            }
         }
 
         /* serviço desabilitado
@@ -106,29 +119,36 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao e dataCriacao.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="idUsuario"></param>
+        /// <param name="tags"></param>
         /// <returns></returns>
         /// <response code="200">Busca realizada com sucesso.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpGet("getByUsuarioTags")]
         public ActionResult<List<Projeto>> getByUsuarioTags([FromQuery] int idUsuario, [FromQuery] string tags)
         {
-            var projetos = _projetoRepository.GetByUsuarioTags(idUsuario, tags);
-
-            byte[] dataBytes;
-
-            foreach (Projeto projeto in projetos)
+            try
             {
-                if (projeto.Imagem != "")
+                var projetos = _projetoRepository.GetByUsuarioTags(idUsuario, tags);
+
+                byte[] dataBytes;
+
+                foreach (Projeto projeto in projetos)
                 {
-                    dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
+                    if (projeto.Imagem != "")
+                    {
+                        dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
 
-                    projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                        projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                    }
                 }
+
+                return Ok(projetos);
             }
-
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(projetos);
+            catch (Exception)
+            {
+                return StatusCode(500, "Obtenção falhou.");
+            }
         }
 
         /// <summary>
@@ -141,29 +161,36 @@ namespace APISquad7.Controllers
         /// <br/><br/>
         /// Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao, dataCriacao e nomeCompleto.
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="idUsuario"></param>
+        /// <param name="tags"></param>
         /// <returns></returns>
         /// <response code="200">Busca realizada com sucesso.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpGet("getComunidade")]
         public ActionResult<List<Projeto>> getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
         {
-            var projetos = _projetoRepository.GetComunidade(idUsuario, tags);
-
-            byte[] dataBytes;
-
-            foreach (Projeto projeto in projetos)
+            try
             {
-                if (projeto.Imagem != "")
+                var projetos = _projetoRepository.GetComunidade(idUsuario, tags);
+
+                byte[] dataBytes;
+
+                foreach (Projeto projeto in projetos)
                 {
-                    dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
+                    if (projeto.Imagem != "")
+                    {
+                        dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
 
-                    projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                        projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                    }
                 }
+
+                return Ok(projetos);
             }
-
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok(projetos);
+            catch (Exception)
+            {
+                return StatusCode(500, "Obtenção falhou.");
+            }
         }
         /// <summary>
         /// Exclusão de projeto.
@@ -174,17 +201,23 @@ namespace APISquad7.Controllers
         /// Dados de entrada: idProjeto
         /// <br/><br/>
         /// </remarks>
-        /// <param name="usuarioView"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         /// <response code="200">Projeto excluído com sucesso.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            _projetoRepository.Delete(id);
+            try
+            {
+                _projetoRepository.Delete(id);
 
-            //!!! Verificar como retonar NÃO OK
-
-            return Ok();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Exclusão falhou.");
+            }
         }
     }
 }
