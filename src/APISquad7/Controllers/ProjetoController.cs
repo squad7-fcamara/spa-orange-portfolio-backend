@@ -114,6 +114,18 @@ namespace APISquad7.Controllers
         {
             var projetos = _projetoRepository.GetByUsuarioTags(idUsuario, tags);
 
+            byte[] dataBytes;
+
+            foreach (Projeto projeto in projetos)
+            {
+                if (projeto.Imagem != "")
+                {
+                    dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
+
+                    projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                }
+            }
+
             //!!! Verificar como retonar NÃO OK
 
             return Ok(projetos);
@@ -136,6 +148,18 @@ namespace APISquad7.Controllers
         public ActionResult<List<Projeto>> getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
         {
             var projetos = _projetoRepository.GetComunidade(idUsuario, tags);
+
+            byte[] dataBytes;
+
+            foreach (Projeto projeto in projetos)
+            {
+                if (projeto.Imagem != "")
+                {
+                    dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
+
+                    projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                }
+            }
 
             //!!! Verificar como retonar NÃO OK
 
