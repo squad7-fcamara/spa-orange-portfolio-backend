@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APISquad7.Model
 {
@@ -25,6 +26,7 @@ namespace APISquad7.Model
         public string Descricao { get; set; }
         public string DataCriacao { get; set; }
         public string NomeCompleto { get; set; }
-        
+        public FileContentResult ArquivoImagem { get; set; }
+
     }
 }

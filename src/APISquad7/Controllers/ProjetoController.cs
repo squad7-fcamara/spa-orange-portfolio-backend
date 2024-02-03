@@ -74,7 +74,7 @@ namespace APISquad7.Controllers
         }
 
         [HttpGet("getByUsuarioTags")]
-        public IActionResult getByUsuarioTags([FromQuery] int idUsuario, [FromQuery] string tags)
+        public ActionResult<List<Projeto>> getByUsuarioTags([FromQuery] int idUsuario, [FromQuery] string tags)
         {
             var projetos = _projetoRepository.GetByUsuarioTags(idUsuario, tags);
 
@@ -84,7 +84,7 @@ namespace APISquad7.Controllers
         }
 
         [HttpGet("getComunidade")]
-        public IActionResult getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
+        public ActionResult<List<Projeto>> getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
         {
             var projetos = _projetoRepository.GetComunidade(idUsuario, tags);
 

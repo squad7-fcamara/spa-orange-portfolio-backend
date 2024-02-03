@@ -4,5 +4,31 @@
         <name>APISquad7</name>
     </assembly>
     <members>
+        <member name="M:APISquad7.Controllers.UsuarioController.Add(APISquad7.ViewModel.UsuarioViewModel)">
+            <summary>
+            Inclusão de usuário.
+            </summary>
+            <remarks>
+            Realiza o cadastro de um usuário.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Usuário cadastrado com sucesso.</response>
+            <response code="409">Violação de chave única. Email já cadastrado.</response>
+            <response code="500">Falha não tratada.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.UsuarioController.Get">
+            <summary>
+            Busca de usuário cadastrados.
+            </summary>
+            <remarks>
+            Realiza a busca de todos usuários cadastrados no sistema, juntamente com seus projetos. 
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Usuário cadastrado com sucesso.</response>
+            <response code="409">Violação de chave única. Email já cadastrado.</response>
+            <response code="500">Falha não tratada.</response>
+        </member>
     </members>
 </doc>
