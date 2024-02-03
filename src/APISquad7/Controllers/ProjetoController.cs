@@ -19,6 +19,17 @@ namespace APISquad7.Controllers
         }
 
         /* Parâmetro projetoView contém os dados que vieram do json da requisição http */
+        /// <summary>
+        /// Inclusão de projeto do usuário.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a inclusão de um projeto do usuário.
+        /// <br/><br/>
+        /// Dados de entrada: idUsuario, titulo, imagem, tag, link e descricao.
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Projeto cadastrado com sucesso.</response>
         [HttpPost]
         public IActionResult Add([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
         {
@@ -41,6 +52,17 @@ namespace APISquad7.Controllers
         }
 
         /* Parâmetro projetoView contém os dados que vieram do json da requisição http */
+        /// <summary>
+        /// Edição de projeto.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a edição de um projeto do usuário.
+        /// <br/><br/>
+        /// Dados de entrada: idProjeto, titulo, imagem, tag, link e descricao.
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Projeto editado com sucesso.</response>
         [HttpPut]
         public IActionResult Put([FromForm] ProjetoViewModel projetoView) // passa a aceitar em formato de formaluario, não mais JSON
         {
@@ -62,6 +84,7 @@ namespace APISquad7.Controllers
             return Ok();
         }
 
+        /* serviço desabilitado
         [HttpPost]
         [Route("{id}/download")]
         public IActionResult DownloadImagem(int id)
@@ -71,8 +94,21 @@ namespace APISquad7.Controllers
             var dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
 
             return File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
-        }
+        }  */
 
+        /// <summary>
+        /// Busca de projetos do usuario por tags.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a busca dos projetos do usuário que contenham alguma das tags informadas.
+        /// <br/><br/>
+        /// Dados de entrada: idUsuario e tags.
+        /// <br/><br/>
+        /// Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao e dataCriacao.
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Busca realizada com sucesso.</response>
         [HttpGet("getByUsuarioTags")]
         public ActionResult<List<Projeto>> getByUsuarioTags([FromQuery] int idUsuario, [FromQuery] string tags)
         {
@@ -83,6 +119,19 @@ namespace APISquad7.Controllers
             return Ok(projetos);
         }
 
+        /// <summary>
+        /// Busca de todos os projetos cadastrados, exceto os do usuario logado.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a busca de todos os projetos cadastrados, exceto os do usuario logado. Se tags forem informadas, busca os projetos que contenham alguma das tags informadas.
+        /// <br/><br/>
+        /// Dados de entrada: idUsuario(logado) e tags
+        /// <br/><br/>
+        /// Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao, dataCriacao e nomeCompleto.
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Busca realizada com sucesso.</response>
         [HttpGet("getComunidade")]
         public ActionResult<List<Projeto>> getComunidade([FromQuery] int idUsuario, [FromQuery] string? tags)
         {
@@ -92,7 +141,18 @@ namespace APISquad7.Controllers
 
             return Ok(projetos);
         }
-
+        /// <summary>
+        /// Exclusão de projeto.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a exclusão de um projeto por idProjeto.
+        /// <br/><br/>
+        /// Dados de entrada: idProjeto
+        /// <br/><br/>
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Projeto excluído com sucesso.</response>
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {

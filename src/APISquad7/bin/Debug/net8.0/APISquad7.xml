@@ -4,12 +4,84 @@
         <name>APISquad7</name>
     </assembly>
     <members>
+        <member name="M:APISquad7.Controllers.ProjetoController.Add(APISquad7.ViewModel.ProjetoViewModel)">
+            <summary>
+            Inclusão de projeto do usuário.
+            </summary>
+            <remarks>
+            Realiza a inclusão de um projeto do usuário.
+            <br/><br/>
+            Dados de entrada: idUsuario, titulo, imagem, tag, link e descricao.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Projeto cadastrado com sucesso.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.ProjetoController.Put(APISquad7.ViewModel.ProjetoViewModel)">
+            <summary>
+            Edição de projeto.
+            </summary>
+            <remarks>
+            Realiza a edição de um projeto do usuário.
+            <br/><br/>
+            Dados de entrada: idProjeto, titulo, imagem, tag, link e descricao.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Projeto editado com sucesso.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.ProjetoController.getByUsuarioTags(System.Int32,System.String)">
+            <summary>
+            Busca de projetos do usuario por tags.
+            </summary>
+            <remarks>
+            Realiza a busca dos projetos do usuário que contenham alguma das tags informadas.
+            <br/><br/>
+            Dados de entrada: idUsuario e tags.
+            <br/><br/>
+            Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao e dataCriacao.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Busca realizada com sucesso.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.ProjetoController.getComunidade(System.Int32,System.String)">
+            <summary>
+            Busca de todos os projetos cadastrados, exceto os do usuario logado.
+            </summary>
+            <remarks>
+            Realiza a busca de todos os projetos cadastrados, exceto os do usuario logado. Se tags forem informadas, busca os projetos que contenham alguma das tags informadas.
+            <br/><br/>
+            Dados de entrada: idUsuario(logado) e tags
+            <br/><br/>
+            Dados de saída: idProjeto, idUsuario, titulo, imagem, tag, link, descricao, dataCriacao e nomeCompleto.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Busca realizada com sucesso.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.ProjetoController.Delete(System.Int32)">
+            <summary>
+            Exclusão de projeto.
+            </summary>
+            <remarks>
+            Realiza a exclusão de um projeto por idProjeto.
+            <br/><br/>
+            Dados de entrada: idProjeto
+            <br/><br/>
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Projeto excluído com sucesso.</response>
+        </member>
         <member name="M:APISquad7.Controllers.UsuarioController.Add(APISquad7.ViewModel.UsuarioViewModel)">
             <summary>
             Inclusão de usuário.
             </summary>
             <remarks>
             Realiza o cadastro de um usuário.
+            <br/><br/>
+            Dados de entrada: nome, sobrenome, email e senha.
             </remarks>
             <param name="usuarioView"></param>
             <returns></returns>
@@ -19,15 +91,67 @@
         </member>
         <member name="M:APISquad7.Controllers.UsuarioController.Get">
             <summary>
-            Busca de usuário cadastrados.
+            Busca de usuários cadastrados.
             </summary>
             <remarks>
-            Realiza a busca de todos usuários cadastrados no sistema, juntamente com seus projetos. 
+            Realiza a busca de todos usuários cadastrados.
+            <br/><br/>
+            Dados de saída: idUsuario, nome, sobrenome e email.
             </remarks>
             <param name="usuarioView"></param>
             <returns></returns>
-            <response code="200">Usuário cadastrado com sucesso.</response>
-            <response code="409">Violação de chave única. Email já cadastrado.</response>
+            <response code="200">Busca realizada com sucesso.</response>
+            <response code="500">Falha não tratada.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.UsuarioController.ValidarLogin(System.String,System.String)">
+            <summary>
+            Validação de login do usuario.
+            </summary>
+            <remarks>
+            Verifica se o usário tem permissão de acesso, através do email e senha.
+            <br/><br/>
+            Dados de entrada: email e senha.
+            <br/><br/>
+            Dados de saída: 
+            <br/>
+            Se usuário tem permissão, retorna os dados: idUsuario, nome, sobrenome e email.  
+            Se usuário não tem permissão, retorna idUsuario = -1.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Validação realizada com sucesso.</response>
+            <response code="500">Falha não tratada.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.UsuarioController.GetByIdUsuario(System.Int32)">
+            <summary>
+            Busca de usuários cadastrados por idUsuario.
+            </summary>
+            <remarks>
+            Realiza a busca de usuários cadastrados através do idUsuario.
+            <br/><br/>
+            Dados de entrada: idUsuario.
+            <br/><br/>
+            Dados de saída: idUsuario, nome, sobrenome e email.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Busca realizada com sucesso.</response>
+            <response code="500">Falha não tratada.</response>
+        </member>
+        <member name="M:APISquad7.Controllers.UsuarioController.GetUsuarioProjetoByIdUsuario(System.Int32)">
+            <summary>
+            Busca de usuario e seus projetos cadastrados pelo idUsuario.
+            </summary>
+            <remarks>
+            Realiza a busca do usuário e seus projetos cadastrados através do idUsuario.
+            <br/><br/>
+            Dados de entrada: idUsuario.
+            <br/><br/>
+            Dados de saída: idUsuario, nome, sobrenome e email e lista de projetos: idProjeto, titulo, imagem, tag, link, descrição e dataCriacao e arquivoImagem.
+            </remarks>
+            <param name="usuarioView"></param>
+            <returns></returns>
+            <response code="200">Busca realizada com sucesso.</response>
             <response code="500">Falha não tratada.</response>
         </member>
     </members>
