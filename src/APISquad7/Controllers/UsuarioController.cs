@@ -2,6 +2,7 @@
 using APISquad7.Model;
 using APISquad7.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace APISquad7.Controllers
 {
@@ -19,6 +20,17 @@ namespace APISquad7.Controllers
         }
 
         /* Parâmetro usuarioView contém os dados que vieram do json da requisição http */
+        /// <summary>
+        /// Inclusão de usuário.
+        /// </summary>
+        /// <remarks>
+        /// Realiza o cadastro de um usuário.
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário cadastrado com sucesso.</response>
+        /// <response code="409">Violação de chave única. Email já cadastrado.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpPost]
         public IActionResult Add(UsuarioViewModel usuarioView)
         {
@@ -43,8 +55,19 @@ namespace APISquad7.Controllers
             }
         }
 
+        /// <summary>
+        /// Busca de usuário cadastrados.
+        /// </summary>
+        /// <remarks>
+        /// Realiza a busca de todos usuários cadastrados no sistema, juntamente com seus projetos. 
+        /// </remarks>
+        /// <param name="usuarioView"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário cadastrado com sucesso.</response>
+        /// <response code="409">Violação de chave única. Email já cadastrado.</response>
+        /// <response code="500">Falha não tratada.</response>
         [HttpGet]
-        public IActionResult Get()
+        public ActionResult<List<Usuario>> Get()
         {
             try
             {
@@ -59,7 +82,7 @@ namespace APISquad7.Controllers
         }
 
         [HttpGet("validarLogin")]
-        public IActionResult ValidarLogin([FromQuery] string email, [FromQuery] string senha)
+        public ActionResult<Usuario> ValidarLogin([FromQuery] string email, [FromQuery] string senha)
         {
             try
             {
@@ -74,7 +97,7 @@ namespace APISquad7.Controllers
         }
 
         [HttpGet("getByIdUsuario")]
-        public IActionResult GetByIdUsuario([FromQuery] int idUsuario)
+        public ActionResult<Usuario> GetByIdUsuario([FromQuery] int idUsuario)
         {
             try
             {
@@ -89,13 +112,22 @@ namespace APISquad7.Controllers
         }
 
         [HttpGet("getUsuarioProjetoByIdUsuario")]
-        public IActionResult GetUsuarioProjetoByIdUsuario([FromQuery] int idUsuario)
+        public ActionResult<Usuario> GetUsuarioProjetoByIdUsuario([FromQuery] int idUsuario)
         {
             try
             {
                 var usuario = _usuarioRepository.GetByIdUsuario(idUsuario);
 
                 usuario.lstProjeto = _projetoRepository.GetByIdUsuario(idUsuario);
+
+                byte[] dataBytes;
+
+                foreach (Projeto projeto in usuario.lstProjeto)
+                {
+                    dataBytes = System.IO.File.ReadAllBytes(projeto.Imagem);
+
+                    projeto.ArquivoImagem = File(dataBytes, "image/" + Path.GetExtension(projeto.Imagem).Replace('.'.ToString(), ""));
+                }
 
                 return Ok(usuario);
             }
