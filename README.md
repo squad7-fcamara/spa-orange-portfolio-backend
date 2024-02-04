@@ -28,7 +28,7 @@ Desenvolvido para o hackathon da season 5 do programa de formação da FCamara. 
 
 ```bash
 # Clone deste repositório
-$ git clone git@github.com:squad7-fcamara/spa-orange-portfolio-backend.git
+$ git clone https://github.com/squad7-fcamara/spa-orange-portfolio-backend.git
 # Acesse a pasta do projeto
 $ cd spa-orange-portfolio-backend
 ```
